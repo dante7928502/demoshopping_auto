@@ -1,0 +1,18 @@
+project/
+├── api/                        # Работа с API
+│   ├── client.py               # Клиент для API запросов
+│   └── endpoints.py            # Константы эндпоинтов
+├── db/                         # Работа с БД
+│   ├── connection.py           # Подключение к БД
+│   ├── queries.py              # SQL запросы
+│   └── models.py               # Модели данных (опционально)
+├── pages/                       # Page Objects (как ранее)
+├── tests/
+│   ├── ui/                      # UI тесты
+│   │   └── test_login.py
+│   └── api/                     # API тесты
+│       └── test_users_api.py
+├── conftest.py                  # Общие фикстуры (включая БД и API клиент)
+├── pytest.ini
+├── requirements.txt
+└── .env
