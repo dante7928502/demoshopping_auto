@@ -3,14 +3,17 @@ import os
 from dotenv import load_dotenv
 from db.connection import DBConnection
 from api.client import APIClient
+from tests.utils.data_gen import generate_login, generate_password
 
 load_dotenv()
+
 
 @pytest.fixture(scope="session")
 def db_connection():
     """Фикстура для подключения к БД на уровне сессии"""
     with DBConnection() as conn:
         yield conn
+
 
 @pytest.fixture
 def db_cursor(db_connection):
@@ -19,10 +22,12 @@ def db_cursor(db_connection):
     yield cursor
     cursor.close()
 
+
 @pytest.fixture(scope="session")
 def api_client():
     """Фикстура для API клиента"""
     return APIClient()
+
 
 @pytest.fixture
 def existing_test_user(db_cursor):
@@ -42,6 +47,7 @@ def existing_test_user(db_cursor):
             pytest.skip("No test users found in database")
     return user
 
+
 @pytest.fixture
 def auth_api_client(api_client, existing_test_user):
     """
@@ -53,10 +59,20 @@ def auth_api_client(api_client, existing_test_user):
     # В реальности может потребоваться заранее известный тестовый пользователь
     login_data = {
         "username": existing_test_user["login"],
-        "password": os.getenv("TEST_USER_PASSWORD")
+        "password": os.getenv("TEST_USER_PASSWORD"),
     }
     response = api_client.post("/login", json=login_data)
     assert response.status_code == 200, "Login failed for test user"
     token = response.json().get("token")
     api_client.set_auth_token(token)
     return api_client
+
+
+@pytest.fixture(scope="session")
+def random_login():
+    return generate_login()
+
+
+@pytest.fixture(scope="session")
+def random_password():
+    return generate_password()
