@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from db.connection import DBConnection
 from api.client import APIClient
 from tests.utils.data_gen import generate_login, generate_password
+from selenium import webdriver
 
 load_dotenv()
 
@@ -55,8 +56,7 @@ def auth_api_client(api_client, existing_test_user):
     Используем существующего пользователя для получения токена через API логина.
     Не создаём нового пользователя в БД.
     """
-    # Предположим, что у existing_test_user есть пароль (или мы его знаем)
-    # В реальности может потребоваться заранее известный тестовый пользователь
+    
     login_data = {
         "username": existing_test_user["login"],
         "password": os.getenv("TEST_USER_PASSWORD"),
