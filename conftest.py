@@ -5,6 +5,7 @@ from db.connection import DBConnection
 from api.client import APIClient
 from tests.utils.data_gen import generate_login, generate_password
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 load_dotenv()
 
@@ -56,7 +57,7 @@ def auth_api_client(api_client, existing_test_user):
     Используем существующего пользователя для получения токена через API логина.
     Не создаём нового пользователя в БД.
     """
-    
+
     login_data = {
         "username": existing_test_user["login"],
         "password": os.getenv("TEST_USER_PASSWORD"),
@@ -76,3 +77,25 @@ def random_login():
 @pytest.fixture(scope="session")
 def random_password():
     return generate_password()
+
+
+@pytest.fixture(scope="function")
+def browser(request):
+    """Фикстура для инициализации и завершения работы браузера."""
+    is_headless = request.config.getoption('headless')
+    options = ChromeOptions()
+
+    if is_headless:
+        options.add_argument('--headless=new')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+
+    browser = webdriver.Chrome(options=options)
+
+    browser.implicitly_wait(10)
+
+    yield browser
+
+    browser.quit()
+    
+    
