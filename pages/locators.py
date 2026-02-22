@@ -19,14 +19,13 @@ class LoginPageLocators:
     LOGIN_USERNAME = (By.ID, "login-username")
     LOGIN_PASSWORD = (By.ID, "login-password")
     LOGIN_BUTTON = (By.CSS_SELECTOR, '#login-form button[type="submit"]')
-
     REGISTER_FORM = (By.ID, "register-form")
     REGISTER_USERNAME = (By.ID, "register-username")
     REGISTER_PASSWORD = (By.ID, "register-password")
     REGISTER_BUTTON = (By.CSS_SELECTOR, '#register-form button[type="submit"]')
 
 
-class CatalogLocators:
+class CatalogPageLocators:
     MIN_PRICE_FIELD = (By.ID, "min-price")
     MAX_PRICE_FIELD = (By.ID, "max-price")
     FILTER_CATEGORIES_DROPDOWN = (By.ID, "category")
@@ -34,11 +33,11 @@ class CatalogLocators:
     FREE_SHIPMENT_CHECKBOX = (By.ID, "free-shipping")
     APPLY_FILTERS_BUTTON = (By.ID, "apply-filters")
     RESET_FILTERS_BUTTON = (By.ID, "reset-filters")
-
     SORT_DROPDOWN = (By.ID, "sort-order")
-
-    PRODUCTS_LIST = (By.ID, "products-list")
-    PAGINATION = (By.ID, "pagination-container")
+    PRODUCTS_LIST = (By.CSS_SELECTOR, "#product-list div")
+    PAGINATION = (By.ID, "pagination")
+    CURRENT_PAGE = (By.CSS_SELECTOR, '#pagination .active')
+    ADD_TO_CART_BUTTON = (By.CSS_SELECTOR, '.add-to-cart-button')
 
 
 class OrdersHistoryLocators:
@@ -70,6 +69,4 @@ class PaymentPageLocators:
     RECEIPT_EMAIL = (By.ID, "receipt-email")
     SUBMIT_PAYMENT_BUTTON = (By.ID, "checkout-button")
 
-
-class OrdersHistoryLocators:
-    pass
+    
