@@ -7,4 +7,3 @@ python-dotenv
 requests        # для API тестов
 PyMySQL             # для подключения к MySQL
 pytest-mysql        # фикстуры для MySQL (опционально, но удобно)
-Faker             # генерация тестовых данных

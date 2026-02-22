@@ -78,9 +78,17 @@ def random_login():
 def random_password():
     return generate_password()
 
+def pytest_addoption(parser):
+    """Добавление пользовательских параметров для запуска тестов."""
+    
+    parser.addoption(
+        '--headless', action='store_true', default=False,
+        help="Run browser in headless mode (no GUI)."
+    )
+
 
 @pytest.fixture(scope="function")
-def browser(request):
+def driver(request):
     """Фикстура для инициализации и завершения работы браузера."""
     is_headless = request.config.getoption('headless')
     options = ChromeOptions()
@@ -89,13 +97,12 @@ def browser(request):
         options.add_argument('--headless=new')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--window-size=1920,1080')
 
-    browser = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(options=options)
 
-    browser.implicitly_wait(10)
+    yield driver
 
-    yield browser
-
-    browser.quit()
+    driver.quit()
     
     

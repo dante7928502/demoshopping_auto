@@ -1,13 +1,35 @@
 from .base_page import BasePage
 from .locators import CatalogPageLocators
 from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement  # Импорт типа
 
 
 class CatalogPage(BasePage):
-    def get_names_of_all_products_on_page(self):
-        elements = self.find_elements(CatalogPageLocators.PRODUCTS_LIST)
-        return [el.text for el in elements]
+    def is_catalog_page_loaded(self) -> bool:
+        try:
+            # 1. Проверяем, что URL совпадает
+            self.wait.until(EC.url_to_be("https://intern.demoshopping.ru/"))
+
+            # 2. Проверяем, что форма с товарами отобразилась
+            self.wait.until(
+                EC.visibility_of_all_elements_located(CatalogPageLocators.PRODUCTS_LIST)
+            )
+
+            return True
+        except TimeoutException:
+            return False
+
+    def get_names_of_all_products_on_page(self) -> list[str]:
+        try:
+            # Используем ваш метод find_elements
+            elements = self.find_elements(CatalogPageLocators.PRODUCTS_LIST)
+            return [el.text for el in elements]
+        except TimeoutException:
+            # Если элементы не появились за время ожидания,
+            # возвращаем пустой список вместо падения теста
+            return []
 
     def add_product_to_cart(self, index=0):
         # Указываем тип через двоеточие

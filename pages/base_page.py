@@ -1,22 +1,23 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from locators import BasePageLocators
+from .locators import BasePageLocators
 
 
 class BasePage:
-    def __init__(self, driver, wait: WebDriverWait):
+    def __init__(self, driver):
         self.driver = driver
-        self.wait = wait
+        # Создаем wait здесь, чтобы не передавать его извне
+        self.wait = WebDriverWait(driver, timeout=10)
 
     def find_element(self, locator):
         return self.wait.until(
-            EC.presence_of_element_located(locator),
+            EC.visibility_of_element_located(locator),
             message=f"Can't find element by locator {locator}",
         )
 
     def find_elements(self, locator):
         return self.wait.until(
-            EC.presence_of_all_elements_located(locator),
+            EC.visibility_of_all_elements_located(locator),
             message=f"Can't find elements by locator {locator}",
         )
 
